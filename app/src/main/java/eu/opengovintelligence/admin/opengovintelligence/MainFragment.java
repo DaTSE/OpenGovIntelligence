@@ -1,9 +1,5 @@
 package eu.opengovintelligence.admin.opengovintelligence;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,18 +12,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+
+import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
+import eu.opengovintelligence.admin.opengovintelligence.explorecubes.CubeAdapter;
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
+import eu.opengovintelligence.admin.opengovintelligence.explorecubes.MeasureAdapter;
 
 
 /**

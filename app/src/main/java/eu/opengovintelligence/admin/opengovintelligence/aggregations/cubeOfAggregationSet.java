@@ -1,4 +1,4 @@
-package eu.opengovintelligence.admin.opengovintelligence;
+package eu.opengovintelligence.admin.opengovintelligence.aggregations;
 
 /**
  * Created by Admin on 29/6/2017.

@@ -1,4 +1,6 @@
-package eu.opengovintelligence.admin.opengovintelligence;
+package eu.opengovintelligence.admin.opengovintelligence.explorecubes;
+
+import eu.opengovintelligence.admin.opengovintelligence.BasicVariables;
 
 /**
  * Created by Admin on 28/6/2017.

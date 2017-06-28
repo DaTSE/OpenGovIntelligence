@@ -1,4 +1,4 @@
-package eu.opengovintelligence.admin.opengovintelligence;
+package eu.opengovintelligence.admin.opengovintelligence.explorecubes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import eu.opengovintelligence.admin.opengovintelligence.R;
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
 
 /**
  * Created by Admin on 28/6/2017.

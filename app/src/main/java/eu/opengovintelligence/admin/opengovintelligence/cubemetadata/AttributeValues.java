@@ -1,6 +1,8 @@
-package eu.opengovintelligence.admin.opengovintelligence;
+package eu.opengovintelligence.admin.opengovintelligence.cubemetadata;
 
 import java.util.ArrayList;
+
+import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Value;
 
 /**
  * Created by Admin on 29/6/2017.
@@ -8,19 +10,19 @@ import java.util.ArrayList;
  * Parameters:
 
  dataset (required)
- dimension (required)
- Description: returns all the levels of dimension values (in case of hierarchical data) that appear at a specific cube
+ attribute (required)
+ Description: returns all the values of an attribute that appear at a specific cube
 
  Example request:
 
- GET http://wapps.islab.uom.gr:8084/JSON-QB-REST-API/dimension-levels?dataset=http://id.vlaanderen.be/statistieken/dq/kubus-bouwvergunningen%23id&dimension=http://id.vlaanderen.be/statistieken/def%23refArea
+ GET http://wapps.islab.uom.gr:8084/JSON-QB-REST-API/attribute-values?dataset=http://id.mkm.ee/statistics/def/cube/crashes&attribute=http://purl.org/linked-data/sdmx/2009/attribute#unitMeasure
  */
 
-public class DimensionLevels {
+public class AttributeValues {
     ArrayList<Value> valueArrayList = new ArrayList<Value>();
     Dimension dimension;
 
-    public DimensionLevels(ArrayList<Value> valueArrayList, Dimension dimension) {
+    public AttributeValues(ArrayList<Value> valueArrayList, Dimension dimension) {
         this.valueArrayList = valueArrayList;
         this.dimension = dimension;
     }

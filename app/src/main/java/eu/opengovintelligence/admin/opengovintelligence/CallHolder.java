@@ -1,6 +1,5 @@
 package eu.opengovintelligence.admin.opengovintelligence;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -13,6 +12,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+
+import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
 
 /**
  * Created by Admin on 28/6/2017.
