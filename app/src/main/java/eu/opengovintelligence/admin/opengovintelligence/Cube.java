@@ -2,6 +2,14 @@ package eu.opengovintelligence.admin.opengovintelligence;
 
 /**
  * Created by Admin on 28/6/2017.
+ *
+ * Parameter: none
+
+ Description: returns all the available cubes of an RDF repository (including the aggregated cubes created by the Data Cube Aggregator)
+
+ Example request:
+
+ GET http://wapps.islab.uom.gr:8084/JSON-QB-REST-API/cubes
  */
 
 public class Cube extends BasicVariables {
