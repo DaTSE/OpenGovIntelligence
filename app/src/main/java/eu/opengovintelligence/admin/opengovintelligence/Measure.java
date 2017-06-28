@@ -4,28 +4,10 @@ package eu.opengovintelligence.admin.opengovintelligence;
  * Created by Admin on 28/6/2017.
  */
 
-public class Measure {
-    String id;
-    String label;
+public class Measure extends BasicVariables {
 
     public Measure(String id, String label) {
-        this.id = id;
-        this.label = label;
+        super(id, label);
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
 }
