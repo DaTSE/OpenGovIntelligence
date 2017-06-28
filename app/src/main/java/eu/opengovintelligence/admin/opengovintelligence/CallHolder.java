@@ -9,8 +9,15 @@ import java.util.ArrayList;
 public class CallHolder {
     private static String cubes;
     private static ArrayList<Cube> cubeArrayList = new ArrayList<Cube>();
+    private static Cube selectedCube;
 
+    public static Cube getSelectedCube() {
+        return selectedCube;
+    }
 
+    public static void setSelectedCube(Cube selectedCube) {
+        CallHolder.selectedCube = selectedCube;
+    }
 
     public static ArrayList<Cube> getCubeArrayList() {
         return cubeArrayList;
@@ -19,7 +26,6 @@ public class CallHolder {
     public static void setCubeArrayList(ArrayList<Cube> cubeArrayList) {
         CallHolder.cubeArrayList = cubeArrayList;
     }
-
 
     public static String getCubes() {
         return cubes;

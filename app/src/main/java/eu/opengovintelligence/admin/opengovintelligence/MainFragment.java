@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -64,12 +65,14 @@ public class MainFragment extends Fragment {
 
         }
 
+
+
         cube_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainFragment.this.getActivity());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainFragment.this.getActivity());
 
                 View dialogView = inflater.inflate(R.layout.search_cube_dialog,null);
 
@@ -79,6 +82,8 @@ public class MainFragment extends Fragment {
                 listview.setAdapter(myAdapter);
 
                 builder.setView(dialogView);
+
+
 
                 final EditText label = (EditText) dialogView.findViewById(R.id.search_cube_box);
                 label.setOnClickListener(new View.OnClickListener() {
@@ -111,8 +116,20 @@ public class MainFragment extends Fragment {
                     }
                 });
 
+                final AlertDialog dialog = builder.show();
 
-                builder.show();
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        CallHolder.setSelectedCube((Cube)listview.getItemAtPosition(i));
+                        cube_text.setText(CallHolder.getSelectedCube().getLabel());
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+
             }
         });
 

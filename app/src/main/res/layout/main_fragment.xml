@@ -7,8 +7,9 @@
         android:id="@+id/cube_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="Click here to select Cube"
+        android:inputType="textPersonName" />
 
 </LinearLayout>
