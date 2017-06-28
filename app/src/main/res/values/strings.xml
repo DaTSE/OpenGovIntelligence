@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">OpenGovIntelligence</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="url">http://wapps.islab.uom.gr:8084/JSON-QB-REST-API/</string>
+    <string name="cubes">cubes</string>
+    <string name="aggregationSetcubes">aggregationSetcubes</string>
+
+
+
+    <string name="action_settings">Settings</string>
+</resources>
