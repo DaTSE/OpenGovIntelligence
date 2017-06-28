@@ -13,15 +13,15 @@ import java.util.ArrayList;
  * Created by Admin on 28/6/2017.
  */
 
-public class CubeAdapter extends ArrayAdapter<Cube> {
+public class MeasureAdapter extends ArrayAdapter<Measure> {
 
-    public CubeAdapter(Context context, ArrayList<Cube> Listrowdata) {
+    public MeasureAdapter(Context context, ArrayList<Measure> Listrowdata) {
         super(context, 0, Listrowdata);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        Cube cube = getItem(position);
+        Measure measure = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -29,7 +29,7 @@ public class CubeAdapter extends ArrayAdapter<Cube> {
         }
 
         TextView label = (TextView) convertView.findViewById(R.id.item_label);
-        label.setText(cube.getLabel());
+        label.setText(measure.getLabel());
 
         return convertView;
     }

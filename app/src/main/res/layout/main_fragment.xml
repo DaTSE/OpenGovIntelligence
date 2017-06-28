@@ -12,4 +12,13 @@
         android:hint="Click here to select Cube"
         android:inputType="textPersonName" />
 
+    <EditText
+        android:id="@+id/measure_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:ems="10"
+        android:hint="Click here to select Measure"
+        android:inputType="textPersonName" />
+
 </LinearLayout>
