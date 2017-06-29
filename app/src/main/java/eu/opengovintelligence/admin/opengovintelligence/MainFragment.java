@@ -15,12 +15,17 @@ import android.widget.ListView;
 
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -48,35 +53,90 @@ public class MainFragment extends Fragment {
         cube_text = (EditText) v.findViewById(R.id.cube_text);
         measure_text = (EditText) v.findViewById(R.id.measure_text);
 
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0,10));
+        entries.add(new BarEntry(1,5));
+        entries.add(new BarEntry(2,20));
+        entries.add(new BarEntry(3,30));
+        entries.add(new BarEntry(4,50));
+        entries.add(new BarEntry(5,100));
+
+        BarDataSet dataSet = new BarDataSet(entries, "# of Calls");
+
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        /*ArrayList<String> labels = new ArrayList<String>();
+        labels.add("January");
+        labels.add("February");
+        labels.add("March");
+        labels.add("April");
+        labels.add("May");
+        labels.add("June");*/
+
+        String[] labs = {"January","February","March","April","May","June"};
+
+
         // in this example, a LineChart is initialized from xml
         BarChart chart = (BarChart) v.findViewById(R.id.chart);
 
-        chart.setDrawBarShadow(true);
-        chart.setDrawValueAboveBar(true);
-        chart.getDescription().setEnabled(false);
+        IAxisValueFormatter xAxisFormatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                if(value==0)
+                    return "January";
+                else if(value==1)
+                    return "February";
+                else if(value==2)
+                    return "March";
+                else if(value==3)
+                    return "April";
+                else if(value==4)
+                    return "May";
+                else if(value==5)
+                    return "June";
+                return "";
+            }
+        };
 
-        //IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
 
-        String[] dataObjects = {"George","Sofia","Anna"};
-        List<BarEntry> entries = new ArrayList<BarEntry>();
-
-        entries.add(new BarEntry(0,10));
-        entries.add(new BarEntry(1,20));
-        entries.add(new BarEntry(2,5));
+        chart.setPinchZoom(false);
+        chart.getDescription().setText("# of times Alice called Bob");
+        chart.setDrawGridBackground(false);
 
         Legend l = chart.getLegend();
-        l.setEnabled(true);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setForm(Legend.LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
 
-        l.setCustom(new LegendEntry[] {} );
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setLabelCount(6, false);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        BarDataSet dataSet = new BarDataSet(entries,"Fuel Type");
-        BarData barData = new BarData(dataSet);
-        chart.setData(barData);
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
 
 
-        // set custom labels and colors
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelCount(6);
+        xAxis.setValueFormatter(xAxisFormatter);
 
+        BarData data = new BarData(dataSet);
+        data.setHighlightEnabled(true);
+        chart.setData(data);
+       // chart.setDescription("# of times Alice called Bob");
+        chart.animateY(2000);
         chart.invalidate();
+
+
+
 
 
 
