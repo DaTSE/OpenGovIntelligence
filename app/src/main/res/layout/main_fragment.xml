@@ -21,4 +21,10 @@
         android:hint="Click here to select Measure"
         android:inputType="textPersonName" />
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 </LinearLayout>

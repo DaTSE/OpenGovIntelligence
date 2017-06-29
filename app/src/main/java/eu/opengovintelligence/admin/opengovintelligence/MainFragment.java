@@ -13,7 +13,18 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.CubeAdapter;
@@ -36,6 +47,44 @@ public class MainFragment extends Fragment {
 
         cube_text = (EditText) v.findViewById(R.id.cube_text);
         measure_text = (EditText) v.findViewById(R.id.measure_text);
+
+        // in this example, a LineChart is initialized from xml
+        BarChart chart = (BarChart) v.findViewById(R.id.chart);
+
+        chart.setDrawBarShadow(true);
+        chart.setDrawValueAboveBar(true);
+        chart.getDescription().setEnabled(false);
+
+        //IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
+
+        String[] dataObjects = {"George","Sofia","Anna"};
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+
+        entries.add(new BarEntry(0,10));
+        entries.add(new BarEntry(1,20));
+        entries.add(new BarEntry(2,5));
+
+        Legend l = chart.getLegend();
+        l.setEnabled(true);
+
+        l.setCustom(new LegendEntry[] {} );
+
+        BarDataSet dataSet = new BarDataSet(entries,"Fuel Type");
+        BarData barData = new BarData(dataSet);
+        chart.setData(barData);
+
+
+        // set custom labels and colors
+
+        chart.invalidate();
+
+
+
+
+
+
+
+
 
 
 
