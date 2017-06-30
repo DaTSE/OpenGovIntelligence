@@ -1,24 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp">
 
-    <EditText
-        android:id="@+id/cube_text"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_cube"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:ems="10"
-        android:hint="Click here to select Cube"
-        android:inputType="textPersonName" />
+        android:layout_marginTop="10dp">
 
+        <EditText
+            android:id="@+id/cube_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Select dataset"
+            android:focusableInTouchMode="false"
+            android:inputType="textPersonName" />
+
+
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_measure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/measure_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:ems="10"
-        android:hint="Click here to select Measure"
+        android:hint="Select measure"
+        android:focusableInTouchMode="false"
         android:inputType="textPersonName" />
+
+
+</android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_free_dimension"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/free_dimension"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Select free dimension"
+            android:focusableInTouchMode="false"
+            android:inputType="textPersonName" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
 
 </LinearLayout>

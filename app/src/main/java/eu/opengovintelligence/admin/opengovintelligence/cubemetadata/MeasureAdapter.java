@@ -1,4 +1,4 @@
-package eu.opengovintelligence.admin.opengovintelligence.explorecubes;
+package eu.opengovintelligence.admin.opengovintelligence.cubemetadata;
 
 import android.content.Context;
 import android.view.LayoutInflater;

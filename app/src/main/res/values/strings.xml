@@ -7,6 +7,7 @@
     <string name="url">http://wapps.islab.uom.gr:8084/JSON-QB-REST-API/</string>
     <string name="cubes">cubes</string>
     <string name="measures">measures</string>
+    <string name="dimensions">dimensions</string>
     <string name="aggregationSetcubes">aggregationSetcubes</string>
 
 

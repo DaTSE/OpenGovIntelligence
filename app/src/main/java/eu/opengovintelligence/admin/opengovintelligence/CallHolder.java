@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Dimension;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
 
@@ -28,6 +29,34 @@ public class CallHolder {
     private static String measures;
     private static ArrayList<Measure> measureArrayList = new ArrayList<Measure>();
     private static Measure selectedMeasure;
+
+    private static String dimensions;
+    private static ArrayList<Dimension> dimensionArrayList = new ArrayList<Dimension>();
+    private static Dimension selectedFreeDimension;
+
+    public static String getDimensions() {
+        return dimensions;
+    }
+
+    public static void setDimensions(String dimensions) {
+        CallHolder.dimensions = dimensions;
+    }
+
+    public static ArrayList<Dimension> getDimensionArrayList() {
+        return dimensionArrayList;
+    }
+
+    public static void setDimensionArrayList(ArrayList<Dimension> dimensionArrayList) {
+        CallHolder.dimensionArrayList = dimensionArrayList;
+    }
+
+    public static Dimension getSelectedFreeDimension() {
+        return selectedFreeDimension;
+    }
+
+    public static void setSelectedFreeDimension(Dimension selectedFreeDimension) {
+        CallHolder.selectedFreeDimension = selectedFreeDimension;
+    }
 
     public static String getMeasures() {
         return measures;
@@ -168,7 +197,71 @@ public class CallHolder {
                             CallHolder.getMeasureArrayList().add(item);
 
                         }
-                        System.out.println(CallHolder.getCubeArrayList());
+                        System.out.println(CallHolder.getMeasureArrayList());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                System.out.println("----------------------------------------------------------------/ End : "+System.currentTimeMillis());
+            }
+        }.execute();
+    }
+
+    public static void MakeDimensionsCall(final Context context){
+        //Cubes call
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected void onPreExecute() {
+            }
+
+            protected String doInBackground(Void... urls) {
+                try {
+
+                    String link = context.getString(R.string.url)+context.getString(R.string.dimensions)+"?dataset="+CallHolder.getSelectedCube().getId();
+
+                    System.out.println(link);
+
+                    URL url = new URL(link);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    try {
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String line;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            stringBuilder.append(line).append("\n");
+                        }
+                        bufferedReader.close();
+
+                        return stringBuilder.toString();
+                    } finally {
+                        urlConnection.disconnect();
+                    }
+                } catch (Exception e) {
+                    System.out.println("ERROR : doInBackground");
+                    //loadingDialog.dismiss();
+                    return null;
+                }
+            }
+            protected void onPostExecute(final String response) {
+                CallHolder.getDimensionArrayList().clear();
+                CallHolder.setDimensions(response);
+                if(response!=null){
+                    try {
+                        JSONObject jsonResult = new JSONObject(response);
+                        JSONArray jsonArray = (JSONArray) jsonResult.get("dimensions");
+
+                        for(int i=0; i< jsonArray.length(); i++){
+                            JSONObject indicator = jsonArray.getJSONObject(i);
+                            Dimension item = new Dimension(indicator.getString("@id"),indicator.getString("label"));
+                            CallHolder.getDimensionArrayList().add(item);
+
+                        }
+                        System.out.println(CallHolder.getDimensionArrayList());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
