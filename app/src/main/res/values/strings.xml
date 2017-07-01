@@ -8,6 +8,8 @@
     <string name="cubes">cubes</string>
     <string name="measures">measures</string>
     <string name="dimensions">dimensions</string>
+    <string name="dimension_values">dimension-values</string>
+
     <string name="aggregationSetcubes">aggregationSetcubes</string>
 
 

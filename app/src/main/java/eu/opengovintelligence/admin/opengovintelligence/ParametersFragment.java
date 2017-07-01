@@ -59,6 +59,7 @@ public class ParametersFragment extends Fragment {
             public void onClick(View view) {
                 CallHolder.setSelectedMeasure(null);
                 CallHolder.setSelectedFreeDimension(null);
+                CallHolder.setSelected_dimension_values(null);
                 dimensions_layout.removeAllViews();
                 free_dimension.setText("");
                 measure_text.setText("");
@@ -242,6 +243,7 @@ public class ParametersFragment extends Fragment {
     }
 
     public void showRestDimensions(){
+        CallHolder.MakeDimensionValuesCall(getActivity());
         dimensions_layout.removeAllViews();
         for(int position=0;position<CallHolder.getDimensionArrayList().size();position++){
             if(CallHolder.getSelectedFreeDimension()!=CallHolder.getDimensionArrayList().get(position)) {

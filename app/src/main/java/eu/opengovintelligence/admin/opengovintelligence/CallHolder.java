@@ -40,7 +40,29 @@ public class CallHolder {
     private static ArrayList<ArrayList<Value>> dimension_values_list = new ArrayList<>();
     private static ArrayList<Value> selected_dimension_values = new ArrayList<>();
 
+    public static ArrayList<String> getDimensions_values() {
+        return dimensions_values;
+    }
 
+    public static void setDimensions_values(ArrayList<String> dimensions_values) {
+        CallHolder.dimensions_values = dimensions_values;
+    }
+
+    public static ArrayList<ArrayList<Value>> getDimension_values_list() {
+        return dimension_values_list;
+    }
+
+    public static void setDimension_values_list(ArrayList<Value> dimension_values_list) {
+        CallHolder.dimension_values_list.add(dimension_values_list);
+    }
+
+    public static ArrayList<Value> getSelected_dimension_values() {
+        return selected_dimension_values;
+    }
+
+    public static void setSelected_dimension_values(ArrayList<Value> selected_dimension_values) {
+        CallHolder.selected_dimension_values = selected_dimension_values;
+    }
 
     public static String getDimensions() {
         return dimensions;
@@ -281,6 +303,78 @@ public class CallHolder {
                 System.out.println("----------------------------------------------------------------/ End : "+System.currentTimeMillis());
             }
         }.execute();
+    }
+
+    public static void MakeDimensionValuesCall(final Context context){
+        CallHolder.getDimensions_values().clear();
+        CallHolder.getDimension_values_list().clear();
+
+        for(int i=0;i<getDimensionArrayList().size();i++){
+            final ArrayList<Value> values = new ArrayList<>();
+            final int j = i;
+            new AsyncTask<Void, Void, String>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                    }
+
+                    protected String doInBackground(Void... urls) {
+                        try {
+                            String link = context.getString(R.string.url)+context.getString(R.string.dimension_values)+"?dataset="+CallHolder.getSelectedCube().getId()+"&dimension="+CallHolder.getDimensionArrayList().get(j).getId();
+
+                            System.out.println(link);
+
+                            URL url = new URL(link);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            try {
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                                StringBuilder stringBuilder = new StringBuilder();
+                                String line;
+                                while ((line = bufferedReader.readLine()) != null) {
+                                    stringBuilder.append(line).append("\n");
+                                }
+                                bufferedReader.close();
+
+                                return stringBuilder.toString();
+                            } finally {
+                                urlConnection.disconnect();
+                            }
+                        } catch (Exception e) {
+                            System.out.println("ERROR : doInBackground");
+                            //loadingDialog.dismiss();
+                            return null;
+                        }
+                    }
+                    protected void onPostExecute(final String response) {
+                        CallHolder.getDimensions_values().add(response);
+                        if(response!=null){
+                            try {
+                                JSONObject jsonResult = new JSONObject(response);
+                                JSONArray jsonArray = (JSONArray) jsonResult.get("values");
+
+                                for(int i=0; i< jsonArray.length(); i++){
+                                    JSONObject indicator = jsonArray.getJSONObject(i);
+                                    Value item = new Value(indicator.getString("@id"),indicator.getString("label"));
+                                    values.add(item);
+
+                                }
+                                CallHolder.setDimension_values_list(values);
+                                System.out.println(CallHolder.getDimension_values_list().get(j));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+
+                        System.out.println("----------------------------------------------------------------/ End : "+System.currentTimeMillis());
+                    }
+                }.execute();
+
+        }
+        //Cubes call
+
     }
 
     public static Cube getSelectedCube() {
