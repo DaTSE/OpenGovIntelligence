@@ -2,6 +2,7 @@ package eu.opengovintelligence.admin.opengovintelligence;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.telecom.Call;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -31,10 +33,13 @@ public class ParametersFragment extends Fragment {
     EditText cube_text ;
     EditText measure_text;
     EditText free_dimension;
+    LinearLayout dimensions_layout;
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.parameters_layout,null);
+        final View v = inflater.inflate(R.layout.parameters_layout,null);
+
+        dimensions_layout = (LinearLayout) v.findViewById(R.id.dimensions_layout);
 
         cube_text = (EditText) v.findViewById(R.id.cube_text);
         measure_text = (EditText) v.findViewById(R.id.measure_text);
@@ -44,14 +49,17 @@ public class ParametersFragment extends Fragment {
             cube_text.setText(CallHolder.getSelectedCube().getLabel());
         if(CallHolder.getSelectedMeasure()!= null)
             measure_text.setText(CallHolder.getSelectedMeasure().getLabel());
-        if(CallHolder.getSelectedFreeDimension()!= null)
+        if(CallHolder.getSelectedFreeDimension()!= null) {
             free_dimension.setText(CallHolder.getSelectedFreeDimension().getLabel());
+            showRestDimensions();
+        }
 
         cube_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CallHolder.setSelectedMeasure(null);
                 CallHolder.setSelectedFreeDimension(null);
+                dimensions_layout.removeAllViews();
                 free_dimension.setText("");
                 measure_text.setText("");
 
@@ -222,6 +230,8 @@ public class ParametersFragment extends Fragment {
                         CallHolder.setSelectedFreeDimension((Dimension)listview.getItemAtPosition(i));
                         free_dimension.setText(CallHolder.getSelectedFreeDimension().getLabel());
                         dialog.dismiss();
+
+                        showRestDimensions();
                     }
                 });
 
@@ -229,5 +239,21 @@ public class ParametersFragment extends Fragment {
         });
 
         return v;
+    }
+
+    public void showRestDimensions(){
+        dimensions_layout.removeAllViews();
+        for(int position=0;position<CallHolder.getDimensionArrayList().size();position++){
+            if(CallHolder.getSelectedFreeDimension()!=CallHolder.getDimensionArrayList().get(position)) {
+                TextInputLayout textInputLayout = new TextInputLayout(getActivity());
+                EditText edit_text = new EditText(getActivity());
+                edit_text.setText("All");
+                edit_text.setHint(CallHolder.getDimensionArrayList().get(position).getLabel());
+                edit_text.setFocusableInTouchMode(false);
+                textInputLayout.addView(edit_text);
+                dimensions_layout.addView(textInputLayout);
+
+            }
+        }
     }
 }

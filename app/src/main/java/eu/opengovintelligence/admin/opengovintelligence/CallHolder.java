@@ -2,6 +2,7 @@ package eu.opengovintelligence.admin.opengovintelligence;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Dimension;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
+import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Value;
 
 /**
  * Created by Admin on 28/6/2017.
@@ -33,6 +35,12 @@ public class CallHolder {
     private static String dimensions;
     private static ArrayList<Dimension> dimensionArrayList = new ArrayList<Dimension>();
     private static Dimension selectedFreeDimension;
+
+    private static ArrayList<String> dimensions_values = new ArrayList<>();
+    private static ArrayList<ArrayList<Value>> dimension_values_list = new ArrayList<>();
+    private static ArrayList<Value> selected_dimension_values = new ArrayList<>();
+
+
 
     public static String getDimensions() {
         return dimensions;
