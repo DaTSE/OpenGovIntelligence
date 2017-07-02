@@ -27,6 +27,7 @@ import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Value;
 public class CallHolder {
     private static Fragment childFragment = null;
 
+
     private static String cubes;
     private static ArrayList<Cube> cubeArrayList = new ArrayList<Cube>();
     private static Cube selectedCube;
@@ -38,6 +39,9 @@ public class CallHolder {
     private static String dimensions;
     private static ArrayList<Dimension> dimensionArrayList = new ArrayList<Dimension>();
     private static Dimension selectedFreeDimension;
+    private static int selectedFreeDimensionPos;
+
+
 
     private static ArrayList<String> dimensions_values = new ArrayList<>();
     private static ArrayList<ArrayList<Value>> dimension_values_list = new ArrayList<>();
@@ -57,6 +61,14 @@ public class CallHolder {
 
     public static void setDimension_values_list(ArrayList<Value> dimension_values_list) {
         CallHolder.dimension_values_list.add(dimension_values_list);
+    }
+
+    public static int getSelectedFreeDimensionPos() {
+        return selectedFreeDimensionPos;
+    }
+
+    public static void setSelectedFreeDimensionPos(int selectedFreeDimensionPos) {
+        CallHolder.selectedFreeDimensionPos = selectedFreeDimensionPos;
     }
 
     public static ArrayList<Value> getSelected_dimension_values() {

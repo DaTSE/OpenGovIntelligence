@@ -255,14 +255,21 @@ public class ParametersFragment extends Fragment {
 
         /*CallHolder.MakeDimensionValuesCall(getActivity());*/
         dimensions_layout.removeAllViews();
+
         for(int position=0;position<CallHolder.getDimensionArrayList().size();position++){
+            if(CallHolder.getSelectedFreeDimension()==CallHolder.getDimensionArrayList().get(position)){
+                CallHolder.setSelectedFreeDimensionPos(position);
+            }
             if(CallHolder.getSelectedFreeDimension()!=CallHolder.getDimensionArrayList().get(position)) {
                 final int finalPosition = position;
                 TextInputLayout textInputLayout = new TextInputLayout(getActivity());
                 final EditText edit_text = new EditText(getActivity());
-                if(start_values)
-                    edit_text.setText(CallHolder.getSelected_dimension_values().get(position).getLabel());
-                else {
+                if(start_values){
+                    if(CallHolder.getSelectedFreeDimensionPos()<finalPosition)
+                        edit_text.setText(CallHolder.getSelected_dimension_values().get(position - 1).getLabel());
+                        else
+                        edit_text.setText(CallHolder.getSelected_dimension_values().get(position).getLabel());
+                }else {
                     CallHolder.getSelected_dimension_values().add(new Value("None","All"));
                     edit_text.setText("All");
                 }
@@ -318,13 +325,20 @@ public class ParametersFragment extends Fragment {
 
                         final AlertDialog dialog = builder.show();
 
+
                         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 try{
+                                        if(CallHolder.getSelectedFreeDimensionPos()<finalPosition){
+                                            CallHolder.getSelected_dimension_values().get(finalPosition-1).setId(((Value) listview.getItemAtPosition(i)).getId());
+                                            CallHolder.getSelected_dimension_values().get(finalPosition-1).setLabel(((Value) listview.getItemAtPosition(i)).getLabel());
+                                            
+                                        }else{
+                                            CallHolder.getSelected_dimension_values().get(finalPosition).setId(((Value) listview.getItemAtPosition(i)).getId());
+                                            CallHolder.getSelected_dimension_values().get(finalPosition).setLabel(((Value) listview.getItemAtPosition(i)).getLabel());
+                                        }
 
-                                        CallHolder.getSelected_dimension_values().get(finalPosition).setId(((Value) listview.getItemAtPosition(i)).getId());
-                                        CallHolder.getSelected_dimension_values().get(finalPosition).setLabel(((Value) listview.getItemAtPosition(i)).getLabel());
                                         edit_text.setText(((Value) listview.getItemAtPosition(i)).getLabel());
                                         dialog.dismiss();
 
