@@ -2,7 +2,6 @@ package eu.opengovintelligence.admin.opengovintelligence;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Dimension;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
-import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Value;
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Value;
 
 /**
  * Created by Admin on 28/6/2017.

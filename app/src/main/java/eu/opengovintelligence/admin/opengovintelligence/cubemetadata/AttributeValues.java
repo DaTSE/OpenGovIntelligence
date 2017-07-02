@@ -2,8 +2,6 @@ package eu.opengovintelligence.admin.opengovintelligence.cubemetadata;
 
 import java.util.ArrayList;
 
-import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Value;
-
 /**
  * Created by Admin on 29/6/2017.
  *

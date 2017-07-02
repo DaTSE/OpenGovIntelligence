@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Dimension;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.DimensionAdapter;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Measure;
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Value;
+import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.ValueAdapter;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.CubeAdapter;
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.MeasureAdapter;
@@ -34,6 +36,7 @@ public class ParametersFragment extends Fragment {
     EditText measure_text;
     EditText free_dimension;
     LinearLayout dimensions_layout;
+
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +54,10 @@ public class ParametersFragment extends Fragment {
             measure_text.setText(CallHolder.getSelectedMeasure().getLabel());
         if(CallHolder.getSelectedFreeDimension()!= null) {
             free_dimension.setText(CallHolder.getSelectedFreeDimension().getLabel());
-            showRestDimensions();
+            if(CallHolder.getSelected_dimension_values().size()!=0)
+                showRestDimensions(true);
+            else
+                showRestDimensions(false);
         }
 
         cube_text.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +65,6 @@ public class ParametersFragment extends Fragment {
             public void onClick(View view) {
                 CallHolder.setSelectedMeasure(null);
                 CallHolder.setSelectedFreeDimension(null);
-                CallHolder.setSelected_dimension_values(null);
                 dimensions_layout.removeAllViews();
                 free_dimension.setText("");
                 measure_text.setText("");
@@ -228,11 +233,12 @@ public class ParametersFragment extends Fragment {
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        CallHolder.getSelected_dimension_values().clear();
                         CallHolder.setSelectedFreeDimension((Dimension)listview.getItemAtPosition(i));
                         free_dimension.setText(CallHolder.getSelectedFreeDimension().getLabel());
                         dialog.dismiss();
 
-                        showRestDimensions();
+                        showRestDimensions(false);
                     }
                 });
 
@@ -242,19 +248,81 @@ public class ParametersFragment extends Fragment {
         return v;
     }
 
-    public void showRestDimensions(){
+    public void showRestDimensions(boolean start_values){
+
         CallHolder.MakeDimensionValuesCall(getActivity());
         dimensions_layout.removeAllViews();
         for(int position=0;position<CallHolder.getDimensionArrayList().size();position++){
             if(CallHolder.getSelectedFreeDimension()!=CallHolder.getDimensionArrayList().get(position)) {
                 TextInputLayout textInputLayout = new TextInputLayout(getActivity());
-                EditText edit_text = new EditText(getActivity());
-                edit_text.setText("All");
+                final EditText edit_text = new EditText(getActivity());
+                if(start_values && CallHolder.getSelected_dimension_values().size()>position)
+                    edit_text.setText(CallHolder.getSelected_dimension_values().get(position).getLabel());
+                else
+                    edit_text.setText("All");
                 edit_text.setHint(CallHolder.getDimensionArrayList().get(position).getLabel());
                 edit_text.setFocusableInTouchMode(false);
                 textInputLayout.addView(edit_text);
                 dimensions_layout.addView(textInputLayout);
 
+                final int finalPosition = position;
+                edit_text.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(ParametersFragment.this.getActivity());
+
+                        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.search_cube_dialog,null);
+
+                        ValueAdapter myAdapter = new ValueAdapter(ParametersFragment.this.getActivity(), CallHolder.getDimension_values_list().get(finalPosition) );
+
+                        final ListView listview = (ListView) dialogView.findViewById(R.id.listview);
+                        listview.setAdapter(myAdapter);
+
+                        builder.setView(dialogView);
+                        final EditText label = (EditText) dialogView.findViewById(R.id.search_cube_box);
+                        label.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                label.setText("");
+                            }
+                        });
+                        label.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                ArrayList<Value> FilterList = new ArrayList<Value>();
+                                for(int xy=0;xy<CallHolder.getDimension_values_list().get(finalPosition).size();xy++){
+                                    if(CallHolder.getDimension_values_list().get(finalPosition).get(xy).getLabel().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                                        FilterList.add(CallHolder.getDimension_values_list().get(finalPosition).get(xy));
+                                    }
+                                }
+                                ValueAdapter FilterAdapter = new ValueAdapter(ParametersFragment.this.getActivity(), FilterList );
+                                listview.setAdapter(FilterAdapter);
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
+
+                        final AlertDialog dialog = builder.show();
+
+                        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                CallHolder.getSelected_dimension_values().add((Value)listview.getItemAtPosition(i));
+                                edit_text.setText(((Value) listview.getItemAtPosition(i)).getLabel());
+                                dialog.dismiss();
+
+                            }
+                        });
+                    }
+                });
             }
         }
     }

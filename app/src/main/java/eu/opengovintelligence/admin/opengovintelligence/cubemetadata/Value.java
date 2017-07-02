@@ -1,4 +1,4 @@
-package eu.opengovintelligence.admin.opengovintelligence.explorecubes;
+package eu.opengovintelligence.admin.opengovintelligence.cubemetadata;
 
 import eu.opengovintelligence.admin.opengovintelligence.BasicVariables;
 
