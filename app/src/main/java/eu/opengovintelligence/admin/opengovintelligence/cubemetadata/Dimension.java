@@ -15,6 +15,21 @@ import eu.opengovintelligence.admin.opengovintelligence.BasicVariables;
  */
 
 public class Dimension extends BasicVariables {
+    private boolean freeDimension;
+
+    public Dimension(String id, String label, boolean freeDimension) {
+        super(id, label);
+        this.freeDimension = freeDimension;
+    }
+
+    public boolean isFreeDimension() {
+        return freeDimension;
+    }
+
+    public void setFreeDimension(boolean freeDimension) {
+        this.freeDimension = freeDimension;
+    }
+
     public Dimension(String id, String label) {
         super(id, label);
     }

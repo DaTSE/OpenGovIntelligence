@@ -253,12 +253,11 @@ public class ParametersFragment extends Fragment {
 
     public void showRestDimensions(boolean start_values){
 
-
         /*CallHolder.MakeDimensionValuesCall(getActivity());*/
         dimensions_layout.removeAllViews();
         for(int position=0;position<CallHolder.getDimensionArrayList().size();position++){
-            final int finalPosition = position;
             if(CallHolder.getSelectedFreeDimension()!=CallHolder.getDimensionArrayList().get(position)) {
+                final int finalPosition = position;
                 TextInputLayout textInputLayout = new TextInputLayout(getActivity());
                 final EditText edit_text = new EditText(getActivity());
                 if(start_values)
@@ -322,10 +321,23 @@ public class ParametersFragment extends Fragment {
                         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                CallHolder.getSelected_dimension_values().get(finalPosition).setId(( (Value)listview.getItemAtPosition(i) ).getId());
-                                CallHolder.getSelected_dimension_values().get(finalPosition).setLabel(( (Value)listview.getItemAtPosition(i) ).getLabel());
-                                edit_text.setText(((Value) listview.getItemAtPosition(i)).getLabel());
-                                dialog.dismiss();
+                                try{
+
+                                        CallHolder.getSelected_dimension_values().get(finalPosition).setId(((Value) listview.getItemAtPosition(i)).getId());
+                                        CallHolder.getSelected_dimension_values().get(finalPosition).setLabel(((Value) listview.getItemAtPosition(i)).getLabel());
+                                        edit_text.setText(((Value) listview.getItemAtPosition(i)).getLabel());
+                                        dialog.dismiss();
+
+                                    System.out.println("finalPosition : "+finalPosition);
+                                    for(int z=0;z<CallHolder.getSelected_dimension_values().size();z++)
+                                        System.out.println("getSelected_Dimension_Values : "+CallHolder.getSelected_dimension_values().get(z).getId() + " , "+CallHolder.getSelected_dimension_values().get(z).getLabel());
+
+
+                                }catch(Exception e){
+
+                                    e.printStackTrace();
+                                }
+
 
                             }
                         });
