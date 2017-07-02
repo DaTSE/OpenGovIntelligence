@@ -1,7 +1,9 @@
 package eu.opengovintelligence.admin.opengovintelligence;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,8 @@ import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Value;
  */
 
 public class CallHolder {
+    private static Fragment childFragment = null;
+
     private static String cubes;
     private static ArrayList<Cube> cubeArrayList = new ArrayList<Cube>();
     private static Cube selectedCube;
@@ -296,6 +300,7 @@ public class CallHolder {
                         e.printStackTrace();
                     }
 
+                    CallHolder.MakeDimensionValuesCall(context);
 
                 }
 
@@ -308,6 +313,11 @@ public class CallHolder {
         CallHolder.getDimensions_values().clear();
         CallHolder.getDimension_values_list().clear();
 
+        final ProgressDialog loadingDialog = new ProgressDialog(context);
+        loadingDialog.setTitle("Please wait");
+        loadingDialog.setMessage("Loading dimensions");
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
         for(int i=0;i<getDimensionArrayList().size();i++){
             final ArrayList<Value> values = new ArrayList<>();
             final int j = i;
@@ -368,6 +378,11 @@ public class CallHolder {
                         }
 
                         System.out.println("----------------------------------------------------------------/ End : "+System.currentTimeMillis());
+                        if(j==getDimensionArrayList().size()-1){
+                            loadingDialog.dismiss();
+
+                        }
+
                     }
                 }.execute();
 
@@ -399,4 +414,14 @@ public class CallHolder {
     public static void setCubes(String cubes) {
         CallHolder.cubes = cubes;
     }
+
+    public static Fragment getChildFragment() {
+        return childFragment;
+    }
+
+    public static void setChildFragment(Fragment childFragment) {
+        CallHolder.childFragment = childFragment;
+    }
+
+
 }

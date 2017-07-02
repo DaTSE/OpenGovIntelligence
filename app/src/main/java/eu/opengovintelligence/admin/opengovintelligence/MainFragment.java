@@ -36,15 +36,16 @@ public class MainFragment extends Fragment {
                 bundle.putString("today_option",(String)tab.getText());
                 mFirebaseAnalytics.logEvent("today_tabs",bundle);*/
                 if (tab.getPosition()==0){
-                    Fragment childFragment = new ParametersFragment();
+                    if(CallHolder.getChildFragment()==null)
+                        CallHolder.setChildFragment(new ParametersFragment()) ;
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
-                    transaction.replace(R.id.mainFrame2, childFragment).commit();
+                    transaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right);
+                    transaction.replace(R.id.mainFrame2, CallHolder.getChildFragment()).commit();
                 }
                 else if(tab.getPosition()==1){
                     Fragment childFragment = new GraphFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right);
+                    transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
                     transaction.replace(R.id.mainFrame2, childFragment).commit();
                 }
             }

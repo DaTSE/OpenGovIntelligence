@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -120,6 +121,7 @@ public class ParametersFragment extends Fragment {
                         dialog.dismiss();
                         CallHolder.MakeMeasuresCall(getActivity());
                         CallHolder.MakeDimensionsCall(getActivity());
+                        //CallHolder.MakeDimensionValuesCall(getActivity());
                     }
                 });
 
@@ -187,6 +189,7 @@ public class ParametersFragment extends Fragment {
         free_dimension.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ParametersFragment.this.getActivity());
 
                 View dialogView = inflater.inflate(R.layout.search_cube_dialog,null);
@@ -250,22 +253,26 @@ public class ParametersFragment extends Fragment {
 
     public void showRestDimensions(boolean start_values){
 
-        CallHolder.MakeDimensionValuesCall(getActivity());
+
+        /*CallHolder.MakeDimensionValuesCall(getActivity());*/
         dimensions_layout.removeAllViews();
         for(int position=0;position<CallHolder.getDimensionArrayList().size();position++){
+            final int finalPosition = position;
             if(CallHolder.getSelectedFreeDimension()!=CallHolder.getDimensionArrayList().get(position)) {
                 TextInputLayout textInputLayout = new TextInputLayout(getActivity());
                 final EditText edit_text = new EditText(getActivity());
-                if(start_values && CallHolder.getSelected_dimension_values().size()>position)
+                if(start_values)
                     edit_text.setText(CallHolder.getSelected_dimension_values().get(position).getLabel());
-                else
+                else {
+                    CallHolder.getSelected_dimension_values().add(new Value("None","All"));
                     edit_text.setText("All");
+                }
                 edit_text.setHint(CallHolder.getDimensionArrayList().get(position).getLabel());
                 edit_text.setFocusableInTouchMode(false);
                 textInputLayout.addView(edit_text);
                 dimensions_layout.addView(textInputLayout);
 
-                final int finalPosition = position;
+
                 edit_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -315,7 +322,8 @@ public class ParametersFragment extends Fragment {
                         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                CallHolder.getSelected_dimension_values().add((Value)listview.getItemAtPosition(i));
+                                CallHolder.getSelected_dimension_values().get(finalPosition).setId(( (Value)listview.getItemAtPosition(i) ).getId());
+                                CallHolder.getSelected_dimension_values().get(finalPosition).setLabel(( (Value)listview.getItemAtPosition(i) ).getLabel());
                                 edit_text.setText(((Value) listview.getItemAtPosition(i)).getLabel());
                                 dialog.dismiss();
 
