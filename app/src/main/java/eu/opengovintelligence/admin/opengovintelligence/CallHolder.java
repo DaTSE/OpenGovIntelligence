@@ -41,7 +41,24 @@ public class CallHolder {
     private static Dimension selectedFreeDimension;
     private static int selectedFreeDimensionPos;
 
+    private static int data[] ;
+    private static String headers[] ;
 
+    public static String[] getHeaders() {
+        return headers;
+    }
+
+    public static void setHeaders(String[] headers) {
+        CallHolder.headers = headers;
+    }
+
+    public static int[] getData() {
+        return data;
+    }
+
+    public static void setData(int[] data) {
+        CallHolder.data = data;
+    }
 
     private static ArrayList<String> dimensions_values = new ArrayList<>();
     private static ArrayList<ArrayList<Value>> dimension_values_list = new ArrayList<>();
