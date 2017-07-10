@@ -41,8 +41,7 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.graph_fragment,null);
 
-
-
+        CallHolder.MakeTableCall(getContext());
 
         ArrayList<BarEntry> entries = new ArrayList<>();
 
@@ -67,13 +66,6 @@ public class GraphFragment extends Fragment {
 
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
-        /*ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");*/
 
         String[] labs = {"January","February","March","April","May","June"};
 
@@ -88,23 +80,6 @@ public class GraphFragment extends Fragment {
                     return CallHolder.getHeaders()[Math.round(value)];
                 else
                     return "";
-
-                /*if(value==0)
-                    return "Friday";
-                else if(value==1)
-                    return "Monday";
-                else if(value==2)
-                    return "Saturday";
-                else if(value==3)
-                    return "Sunday";
-                else if(value==4)
-                    return "Thursday";
-                else if(value==5)
-                    return "Tuesday";
-                else if(value==6)
-                    return "Wednesday";
-                return "";*/
-
 
             }
         };
@@ -152,11 +127,6 @@ public class GraphFragment extends Fragment {
         // chart.setDescription("# of times Alice called Bob");
         chart.animateY(2000);
         chart.invalidate();
-
-
-
-
-
 
         return v;
     }

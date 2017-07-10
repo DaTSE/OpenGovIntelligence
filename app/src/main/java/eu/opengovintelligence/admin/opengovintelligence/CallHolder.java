@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,8 @@ import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Value;
 
 public class CallHolder {
     private static Fragment childFragment = null;
+
+
 
 
     private static String cubes;
@@ -416,6 +419,81 @@ public class CallHolder {
                 }.execute();
 
         }
+        //Cubes call
+
+    }
+
+
+    public static void MakeTableCall(final Context context){
+
+        new AsyncTask<Void, Void, String>() {
+
+                @Override
+                protected void onPreExecute() {
+                }
+
+                protected String doInBackground(Void... urls) {
+                    try {
+
+
+                        String link = context.getString(R.string.url)+context.getString(R.string.table)+"?dataset="+CallHolder.getSelectedCube().getId();
+                        link+="&measure%5B%5D="+CallHolder.getSelectedMeasure().getId();
+                        link+="&row%5B%5D="+CallHolder.getSelectedFreeDimension().getId();
+                        link+="&http://id.mareg.gr/statistics/def/dimension/registration_year=http://reference.data.gov.uk/id/year/2012";
+                        System.out.println(link);
+
+                        URL url = new URL(link);
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                        try {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                            StringBuilder stringBuilder = new StringBuilder();
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null) {
+                                stringBuilder.append(line).append("\n");
+                            }
+                            bufferedReader.close();
+
+                            return stringBuilder.toString();
+                        } finally {
+                            urlConnection.disconnect();
+                        }
+                    } catch (Exception e) {
+                        System.out.println("ERROR : doInBackground");
+                        //loadingDialog.dismiss();
+                        return null;
+                    }
+                }
+                protected void onPostExecute(final String response) {
+                    /*CallHolder.getDimensions_values().add(response);
+                    if(response!=null){
+                        try {
+                            JSONObject jsonResult = new JSONObject(response);
+                            JSONArray jsonArray = (JSONArray) jsonResult.get("values");
+
+                            for(int i=0; i< jsonArray.length(); i++){
+                                JSONObject indicator = jsonArray.getJSONObject(i);
+                                Value item = new Value(indicator.getString("@id"),indicator.getString("label"));
+                                values.add(item);
+
+                            }
+                            CallHolder.setDimension_values_list(values);
+                            System.out.println(CallHolder.getDimension_values_list().get(j));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    System.out.println("----------------------------------------------------------------/ End : "+System.currentTimeMillis());
+                    if(j==getDimensionArrayList().size()-1){
+
+                    }
+*/
+                }
+            }.execute();
+
         //Cubes call
 
     }
