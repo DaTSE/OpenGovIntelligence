@@ -41,14 +41,18 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.graph_fragment,null);
 
-        CallHolder.MakeTableCall(getContext());
+        //CallHolder.MakeTableCall(getContext());
 
         ArrayList<BarEntry> entries = new ArrayList<>();
 
 
-        int[] data_values = { 860 , 918 , 902 , 30 , 1038 , 288 , 1324  };
-        String[] headers = { "Friday" , "Monday" , "Saturday" , "Sunday" , "Thursday" , "Tuesday" , "Wednesday" };
-        int dim_values_size = 7*10;
+
+
+        int[] data_values = CallHolder.getData();
+        String[] headers = CallHolder.getHeaders();
+        int dim_values_size = CallHolder.getHeaders().length;
+
+
         CallHolder.setData(new int[dim_values_size]);
         CallHolder.setHeaders(new String[dim_values_size]);
         for(int i=0;i<dim_values_size;i++){

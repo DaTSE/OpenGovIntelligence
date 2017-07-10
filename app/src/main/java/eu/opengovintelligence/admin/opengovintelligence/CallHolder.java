@@ -12,9 +12,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 
 import eu.opengovintelligence.admin.opengovintelligence.cubemetadata.Dimension;
 import eu.opengovintelligence.admin.opengovintelligence.explorecubes.Cube;
@@ -44,8 +47,20 @@ public class CallHolder {
     private static Dimension selectedFreeDimension;
     private static int selectedFreeDimensionPos;
 
-    private static int data[] ;
+    private static int data[]  ;
     private static String headers[] ;
+
+    private static String graphResult;
+
+    private static ProgressDialog loadingDialog;
+
+    public static ProgressDialog getLoadingDialog() {
+        return loadingDialog;
+    }
+
+    public static void setLoadingDialog(ProgressDialog loadingDialog) {
+        CallHolder.loadingDialog = loadingDialog;
+    }
 
     public static String[] getHeaders() {
         return headers;
@@ -426,73 +441,111 @@ public class CallHolder {
 
     public static void MakeTableCall(final Context context){
 
-        new AsyncTask<Void, Void, String>() {
+        try {
+            new AsyncTask<Void, Void, String>() {
 
                 @Override
-                protected void onPreExecute() {
-                }
+                    protected void onPreExecute() {
 
-                protected String doInBackground(Void... urls) {
-                    try {
+                    }
 
-
-                        String link = context.getString(R.string.url)+context.getString(R.string.table)+"?dataset="+CallHolder.getSelectedCube().getId();
-                        link+="&measure%5B%5D="+CallHolder.getSelectedMeasure().getId();
-                        link+="&row%5B%5D="+CallHolder.getSelectedFreeDimension().getId();
-                        link+="&http://id.mareg.gr/statistics/def/dimension/registration_year=http://reference.data.gov.uk/id/year/2012";
-                        System.out.println(link);
-
-                        URL url = new URL(link);
-                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    protected String doInBackground(Void... urls) {
                         try {
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                            StringBuilder stringBuilder = new StringBuilder();
-                            String line;
-                            while ((line = bufferedReader.readLine()) != null) {
-                                stringBuilder.append(line).append("\n");
+
+
+                            String link = context.getString(R.string.url)+context.getString(R.string.table)+"?dataset="+CallHolder.getSelectedCube().getId();
+                            link+="&measure%5B%5D="+CallHolder.getSelectedMeasure().getId();
+                            link+="&row%5B%5D="+CallHolder.getSelectedFreeDimension().getId();
+                            //link+="&http://id.mareg.gr/statistics/def/dimension/registration_year=http://reference.data.gov.uk/id/year/2012";
+                            System.out.println(link);
+
+                            URL url = new URL(link);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            try {
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                                StringBuilder stringBuilder = new StringBuilder();
+                                String line;
+                                while ((line = bufferedReader.readLine()) != null) {
+                                    stringBuilder.append(line).append("\n");
+                                }
+                                bufferedReader.close();
+
+                                return stringBuilder.toString();
+                            } finally {
+                                urlConnection.disconnect();
                             }
-                            bufferedReader.close();
-
-                            return stringBuilder.toString();
-                        } finally {
-                            urlConnection.disconnect();
+                        } catch (Exception e) {
+                            System.out.println("ERROR : doInBackground");
+                            //loadingDialog.dismiss();
+                            return null;
                         }
-                    } catch (Exception e) {
-                        System.out.println("ERROR : doInBackground");
-                        //loadingDialog.dismiss();
-                        return null;
                     }
-                }
-                protected void onPostExecute(final String response) {
-                    /*CallHolder.getDimensions_values().add(response);
-                    if(response!=null){
-                        try {
-                            JSONObject jsonResult = new JSONObject(response);
-                            JSONArray jsonArray = (JSONArray) jsonResult.get("values");
+                    protected void onPostExecute(final String response) {
+                        //private static int data[] ;
+                        //private static String headers[] ;
+                        CallHolder.setGraphResult(response);
 
-                            for(int i=0; i< jsonArray.length(); i++){
-                                JSONObject indicator = jsonArray.getJSONObject(i);
-                                Value item = new Value(indicator.getString("@id"),indicator.getString("label"));
-                                values.add(item);
+                        if(response!=null){
+                            try {
+                                JSONObject jsonResult = new JSONObject(response);
+                                JSONArray jsonArray = (JSONArray) jsonResult.get("data");
 
+                                //GET DATA
+                                ArrayList<Integer> data_list = new ArrayList<Integer>();
+                                for(int i=0;i<jsonArray.length();i++)
+                                    data_list.add(jsonArray.getInt(i));
+
+                                data = new int[data_list.size()];
+                                for(int i=0;i<jsonArray.length();i++)
+                                    data[i]=data_list.get(i);
+
+                                //GET HEADERS
+                                JSONObject d_values = jsonResult.getJSONObject("structure").getJSONObject("dimension_values");
+                                //JSONObject d_values_dimension = d_values
+
+                                Iterator<String> keys= d_values.keys();
+                                while (keys.hasNext())
+                                {
+                                    ArrayList<String> headers_list = new ArrayList<String>();
+                                    String dimension = (String)keys.next();
+                                    String valueString = d_values.getString(dimension);
+                                    System.out.println("keyvalue : "+dimension+"  | valueString : "+valueString);
+
+
+                                    JSONObject indicator = d_values.getJSONObject(dimension);
+                                    int counter=0;
+                                    Iterator<String> inside_keys= indicator.keys();
+                                    while (inside_keys.hasNext()) {
+                                        String Inside_keyValue = (String)inside_keys.next();
+                                        JSONObject value = indicator.getJSONObject(Inside_keyValue);
+                                        headers_list.add(value.getString("label"));
+                                        //headers[counter]=value.getString("label");
+                                        //System.out.println(headers[counter]);
+
+                                        //System.out.println("keyvalue : "+Inside_keyValue+"  | valueString : "+Inside_valueString +" | Counter : "+counter);
+                                        counter++;
+                                    }
+                                    headers = new String[headers_list.size()];
+                                    for(int i=0;i<headers_list.size();i++)
+                                        headers[i]=headers_list.get(i);
+
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            CallHolder.setDimension_values_list(values);
-                            System.out.println(CallHolder.getDimension_values_list().get(j));
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
                         }
-
-
-                    }
-
-                    System.out.println("----------------------------------------------------------------/ End : "+System.currentTimeMillis());
-                    if(j==getDimensionArrayList().size()-1){
+                        loadingDialog.dismiss();
 
                     }
-*/
-                }
-            }.execute();
+                }.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         //Cubes call
 
@@ -530,5 +583,11 @@ public class CallHolder {
         CallHolder.childFragment = childFragment;
     }
 
+    public static String getGraphResult() {
+        return graphResult;
+    }
 
+    public static void setGraphResult(String graphResult) {
+        CallHolder.graphResult = graphResult;
+    }
 }

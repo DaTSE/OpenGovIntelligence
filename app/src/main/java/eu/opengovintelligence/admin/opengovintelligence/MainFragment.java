@@ -1,5 +1,6 @@
 package eu.opengovintelligence.admin.opengovintelligence;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -43,6 +44,12 @@ public class MainFragment extends Fragment {
                     transaction.replace(R.id.mainFrame2, CallHolder.getChildFragment()).commit();
                 }
                 else if(tab.getPosition()==1){
+                    CallHolder.MakeTableCall(getContext());
+                    CallHolder.setLoadingDialog(new ProgressDialog(getActivity()));
+                    CallHolder.getLoadingDialog().setTitle("Loading data");
+                    CallHolder.getLoadingDialog().setMessage("Loading Data");
+                    CallHolder.getLoadingDialog().setCancelable(false);
+                    CallHolder.getLoadingDialog().show();
                     Fragment childFragment = new GraphFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
