@@ -54,6 +54,10 @@ public class CallHolder {
 
     private static ProgressDialog loadingDialog;
 
+    private static ArrayList<String> dimensions_values = new ArrayList<>();
+    private static ArrayList<ArrayList<Value>> dimension_values_list = new ArrayList<>();
+    private static ArrayList<Value> selected_dimension_values = new ArrayList<>();
+
     public static ProgressDialog getLoadingDialog() {
         return loadingDialog;
     }
@@ -77,10 +81,6 @@ public class CallHolder {
     public static void setData(int[] data) {
         CallHolder.data = data;
     }
-
-    private static ArrayList<String> dimensions_values = new ArrayList<>();
-    private static ArrayList<ArrayList<Value>> dimension_values_list = new ArrayList<>();
-    private static ArrayList<Value> selected_dimension_values = new ArrayList<>();
 
     public static ArrayList<String> getDimensions_values() {
         return dimensions_values;
@@ -456,6 +456,21 @@ public class CallHolder {
                             String link = context.getString(R.string.url)+context.getString(R.string.table)+"?dataset="+CallHolder.getSelectedCube().getId();
                             link+="&measure%5B%5D="+CallHolder.getSelectedMeasure().getId();
                             link+="&row%5B%5D="+CallHolder.getSelectedFreeDimension().getId();
+                            for(int i=0;i<CallHolder.getSelected_dimension_values().size();i++){
+                                if(CallHolder.getSelected_dimension_values().get(i).getId()!="None"){
+                                    if(i<CallHolder.getSelectedFreeDimensionPos()){
+                                        link+="&"+CallHolder.getDimensionArrayList().get(i).getId()+"="+CallHolder.getSelected_dimension_values().get(i).getId();
+                                    }else{
+                                        link+="&"+CallHolder.getDimensionArrayList().get(i+1).getId()+"="+CallHolder.getSelected_dimension_values().get(i).getId();
+                                    }
+                                }
+
+                            }
+
+
+                            //getSelected_Dimension_Values : http://id.mareg.gr/statistics/concept/brand/APRILIA_SPA , APRILIA_SPA
+                            //getSelected_Dimension_Values : None , All
+
                             //link+="&http://id.mareg.gr/statistics/def/dimension/registration_year=http://reference.data.gov.uk/id/year/2012";
                             System.out.println(link);
 

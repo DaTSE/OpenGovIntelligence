@@ -70,10 +70,6 @@ public class GraphFragment extends Fragment {
 
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
-
-        String[] labs = {"January","February","March","April","May","June"};
-
-
         // in this example, a LineChart is initialized from xml
         BarChart chart = (BarChart) v.findViewById(R.id.chart);
 
@@ -91,7 +87,7 @@ public class GraphFragment extends Fragment {
 
 
         chart.setPinchZoom(false);
-        chart.getDescription().setText("# of times Alice called Bob");
+        chart.getDescription().setText("#");
         chart.setDrawGridBackground(false);
 
 
