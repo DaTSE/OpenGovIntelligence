@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 /**
@@ -44,16 +45,22 @@ public class MainFragment extends Fragment {
                     transaction.replace(R.id.mainFrame2, CallHolder.getChildFragment()).commit();
                 }
                 else if(tab.getPosition()==1){
-                    CallHolder.MakeTableCall(getContext());
-                    CallHolder.setLoadingDialog(new ProgressDialog(getActivity()));
-                    CallHolder.getLoadingDialog().setTitle("Loading data");
-                    CallHolder.getLoadingDialog().setMessage("Loading Data");
-                    CallHolder.getLoadingDialog().setCancelable(false);
-                    CallHolder.getLoadingDialog().show();
-                    Fragment childFragment = new GraphFragment();
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
-                    transaction.replace(R.id.mainFrame2, childFragment).commit();
+                    if(CallHolder.getSelectedCube()==null){
+                        Toast.makeText(getContext(),"Please fill up the form before ask for a graph.",Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        CallHolder.MakeTableCall(getContext());
+                        CallHolder.setLoadingDialog(new ProgressDialog(getActivity()));
+                        CallHolder.getLoadingDialog().setTitle("Loading data");
+                        CallHolder.getLoadingDialog().setMessage("Loading Data");
+                        CallHolder.getLoadingDialog().setCancelable(false);
+                        CallHolder.getLoadingDialog().show();
+                        Fragment childFragment = new GraphFragment();
+                        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                        transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
+                        transaction.replace(R.id.mainFrame2, childFragment).commit();
+                    }
+
                 }
             }
 

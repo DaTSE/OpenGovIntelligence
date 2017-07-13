@@ -66,7 +66,7 @@ public class GraphFragment extends Fragment {
 
 
 
-        BarDataSet dataSet = new BarDataSet(entries, "# of Calls");
+        BarDataSet dataSet = new BarDataSet(entries, "# of "+CallHolder.getSelectedFreeDimension().getLabel());
 
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
@@ -87,7 +87,7 @@ public class GraphFragment extends Fragment {
 
 
         chart.setPinchZoom(false);
-        chart.getDescription().setText("#");
+        chart.getDescription().setText("# "+CallHolder.getSelectedMeasure().getLabel());
         chart.setDrawGridBackground(false);
 
 
